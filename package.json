@@ -15,7 +15,9 @@
     "clean-css-brunch": "~2.0.0",
     "css-brunch": "~2.0.0",
     "elm-brunch": "^0.7.0",
+    "es5-shim": "^4.5.9",
     "javascript-brunch": "~2.0.0",
+    "phantomjs-polyfill": "0.0.2",
     "uglify-js-brunch": "~2.0.1"
   }
 }

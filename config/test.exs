@@ -4,7 +4,9 @@ use Mix.Config
 # you can enable the server option below.
 config :phoenix_qc_example, PhoenixQcExample.Endpoint,
   http: [port: 4001],
-  server: false
+  server: true
+
+config :phoenix_qc_example, :sql_sandbox, true
 
 # Print only warnings and errors during test
 config :logger, level: :warn

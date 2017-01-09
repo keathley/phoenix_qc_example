@@ -12,12 +12,13 @@ resetButton.addEventListener('click', e => {
   reset()
 })
 
-voteButtons.forEach(button => {
+for (var i = 0; i < voteButtons.length; i++) {
+  var button = voteButtons[i]
   button.addEventListener("click", e => {
     let id = e.target.dataset.id
     sendPost(id)
   })
-})
+}
 
 function reset() {
   var request = new XMLHttpRequest();

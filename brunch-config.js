@@ -43,7 +43,6 @@ exports.config = {
     watched: [
       "web/static",
       "test/static",
-      // "web/elm/Allocation.elm"
     ],
 
     // Where to compile files to
@@ -58,6 +57,7 @@ exports.config = {
     //   outputFolder: "../static/vendor"
     // },
     babel: {
+      presets: ['es2015'],
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
     }
