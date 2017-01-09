@@ -34,8 +34,9 @@ defmodule PhoenixQcExample.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:quixir, "~> 0.9", only: :test },
-     {:wallaby, "~> 0.14.0", only: :test},
+     {:quixir, "~> 0.9", only: [:dev, :test]},
+     {:wallaby, "~> 0.14.0", only: [:dev, :test]},
+     {:pollution, "~> 0.9.0", only: [:dev, :test]},
    ]
   end
 end

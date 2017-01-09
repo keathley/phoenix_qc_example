@@ -44,7 +44,7 @@ defmodule PhoenixQcExample.VoteCounter do
     {:reply, {:ok, new_state[id]}, new_state}
   end
 
-  def handle_call(:reset, _from, state) do
+  def handle_call(:reset, _from, _state) do
     {:reply, {:ok, @default_state}, @default_state}
   end
 end
