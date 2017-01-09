@@ -22,7 +22,6 @@ defmodule PhoenixQcExample.PropTest do
       commands
       |> Enum.each(fn {command, args} ->
         {:ok, expected, actual} = apply(ClientStateMachine, command, [args])
-        IO.inspect {expected, actual}
         assert expected == actual
       end)
     end
