@@ -9,7 +9,7 @@ defmodule PhoenixQcExample.FeatureCase do
     end
   end
 
-  setup tags do
+  setup _tags do
     {:ok, session} = Wallaby.start_session()
     {:ok, session: session}
   end

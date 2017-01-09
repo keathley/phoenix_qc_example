@@ -17,14 +17,14 @@ defmodule PhoenixQcExample.PropTest do
   test "users get the correct votes", %{session: session} do
     {:ok, _} = ClientStateMachine.start_link(session)
 
-    ptest commands: gen_commands() do
+    ptest [commands: gen_commands()], repeat_for: 10 do
+      PhoenixQcExample.VoteCounter.reset()
       commands
-      |> Enum.each(&run_command/1)
+      |> Enum.each(fn {command, args} ->
+        {:ok, expected, actual} = apply(ClientStateMachine, command, [args])
+        IO.inspect {expected, actual}
+        assert expected == actual
+      end)
     end
   end
-
-  def run_command({command, args}) do
-    apply(ClientStateMachine, command, args)
-  end
-
 end

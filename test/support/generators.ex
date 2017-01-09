@@ -2,7 +2,7 @@ defmodule PhoenixQcExample.Generators do
   import Pollution.VG
 
   def gen_commands() do
-    list(of: choose(from: [gen_reset(), gen_vote()]))
+    list(of: choose(from: [gen_reset(), gen_vote()]), max: 10)
   end
 
   def gen_reset() do
