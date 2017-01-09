@@ -1,0 +1,35 @@
+/* This file is for your main application css. */
+main {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.choice {
+  flex: 0 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 2rem;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 0 #ccc;
+}
+
+@media (min-width: 800px) {
+  .choice {
+    flex: 1;
+  }
+}
+
+.choice > .title {
+  flex: 0 0 100%;
+}
+
+.vote-count {
+  text-align: center;
+  font-size: 4rem;
+  font-weight: bold;
+}

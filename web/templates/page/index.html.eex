@@ -1,0 +1,41 @@
+<div class="choice">
+  <h1 class="title text-center">
+    Thai
+  </h1>
+  <div class="actions">
+    <div class="vote-count" data-voter-id="1">
+      0
+    </div>
+    <button data-id="1" class="vote-button btn btn-primary">
+      Vote
+    </button>
+  </div>
+</div>
+
+<div class="choice">
+  <h1 class="title text-center">
+    Burritos
+  </h1>
+  <div class="actions">
+    <div class="vote-count" data-voter-id="2">
+      0
+    </div>
+    <button data-id="2" class="vote-button btn btn-primary">
+      Vote
+    </button>
+  </div>
+</div>
+
+<div class="choice">
+  <h1 class="title text-center">
+    Sushi
+  </h1>
+  <div class="actions">
+    <div class="vote-count" data-voter-id="3">
+      0
+    </div>
+    <button data-id="3" class="vote-button btn btn-primary">
+      Vote
+    </button>
+  </div>
+</div>
