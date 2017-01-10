@@ -2,8 +2,6 @@ defmodule PhoenixQcExample.ClientStateMachine do
   use GenServer
   use Wallaby.DSL
 
-  import ExUnit.Assertions
-
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end

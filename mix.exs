@@ -35,10 +35,9 @@ defmodule PhoenixQcExample.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
     #  {:quixir, "~> 0.9", only: [:dev, :test]},
-     {:quixir, path: "../quixir", only: [:dev, :test]},
+     {:quixir, path: "~/Development/quixir", only: [:dev, :test]},
      {:wallaby, "~> 0.14.0", only: [:dev, :test]},
      {:pollution, "~> 0.9.0", only: [:dev, :test]},
-     {:eqc_ex, "~> 1.4.2", only: [:dev, :test]},
    ]
   end
 end
