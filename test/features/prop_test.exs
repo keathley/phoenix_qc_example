@@ -24,16 +24,19 @@ defmodule PhoenixQcExample.PropTest do
     end
   end
 
+  @tag :focus
   test "a user should never loose other users votes" do
     clients = [gen_csm(), gen_csm(), gen_csm(), gen_csm()]
     ptest [commands: gen_commands(clients)], repeat_for: 10, trace: true do
       commands
-      |> Enum.each(& run_command(&1) )
+      |> Enum.map(& Task.async(fn -> run_command(&1) end) )
+      |> Enum.map(& Task.await(&1) )
+      |> Enum.each(fn {expected, actual} -> assert expected >= actual end)
     end
   end
 
   def run_command({command, pid, args}) do
     {:ok, expected, actual} = apply(ClientStateMachine, command, [pid, args])
-    assert expected == actual
+    {expected, actual}
   end
 end

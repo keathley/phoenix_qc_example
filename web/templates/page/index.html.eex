@@ -10,6 +10,8 @@
       Vote
     </button>
   </div>
+  <ul class="vote-list" data-vote-list-id="1">
+  </ul>
 </div>
 
 <div class="choice">
@@ -24,6 +26,8 @@
       Vote
     </button>
   </div>
+  <ul class="vote-list" data-vote-list-id="2">
+  </ul>
 </div>
 
 <div class="choice">
@@ -38,4 +42,6 @@
       Vote
     </button>
   </div>
+  <ul class="vote-list" data-vote-list-id="3">
+  </ul>
 </div>

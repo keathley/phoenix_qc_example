@@ -7,10 +7,14 @@ defmodule PhoenixQcExample.ClientStateMachine do
   end
 
   def init(session) do
+    id = System.unique_integer()
+    name = Faker.Name.name
+
     session
     |> visit("/")
+    |> fill_in("name", with: name)
 
-    {:ok, %{session: session}}
+    {:ok, %{session: session, id: id, name: name}}
   end
 
   def reset(pid, _) do
@@ -21,7 +25,7 @@ defmodule PhoenixQcExample.ClientStateMachine do
     GenServer.call(pid, {:vote, id})
   end
 
-  def handle_call(:reset, _from, %{session: session}) do
+  def handle_call(:reset, _from, %{session: session}=state) do
     session
     |> click_button("reset")
 
@@ -30,10 +34,10 @@ defmodule PhoenixQcExample.ClientStateMachine do
       |> find(".vote-count", count: 3, text: "0")
       |> Enum.map(&text/1)
 
-    {:reply, {:ok, votes, ["0", "0", "0"]}, %{session: session}}
+    {:reply, {:ok, votes, ["0", "0", "0"]}, %{state | session: session}}
   end
 
-  def handle_call({:vote, id}, _from, %{session: session}) do
+  def handle_call({:vote, id}, _from, %{session: session}=state) do
     # IO.puts "Voting for #{id}"
     {old_count, _} =
       session
@@ -61,6 +65,6 @@ defmodule PhoenixQcExample.ClientStateMachine do
 
     # IO.puts("New Count: #{new_count}")
 
-    {:reply, {:ok, expected_count, new_count}, %{session: session}}
+    {:reply, {:ok, expected_count, new_count}, %{state | session: session}}
   end
 end

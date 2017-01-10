@@ -41,6 +41,7 @@ defmodule PhoenixQcExample.Mixfile do
     #  {:pollution, "~> 0.9.0", only: [:dev, :test]},
     {:excheck, "~> 0.5", only: [:dev, :test]},
       {:triq, github: "triqng/triq", only: [:dev, :test]},
+      {:faker, "~> 0.7", only: [:dev, :test]},
    ]
   end
 end

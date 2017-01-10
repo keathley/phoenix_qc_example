@@ -1,7 +1,7 @@
 defmodule PhoenixQcExample.VoteCounter do
   use GenServer
 
-  @default_state %{"1" => 0, "2" => 0, "3" => 0}
+  @default_state %{"1" => [], "2" => [], "3" => []}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
@@ -15,7 +15,7 @@ defmodule PhoenixQcExample.VoteCounter do
     GenServer.call(__MODULE__, {:get, id})
   end
 
-  def put(id, value) when is_binary(id) and is_number(value) do
+  def put(id, value) when is_binary(id) and is_list(value) do
     GenServer.call(__MODULE__, {:put, id, value})
   end
 
@@ -47,5 +47,4 @@ defmodule PhoenixQcExample.VoteCounter do
 
     {:reply, {:ok, new_state[id]}, new_state}
   end
-
 end
