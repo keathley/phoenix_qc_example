@@ -5,7 +5,9 @@ defmodule PhoenixQcExample.PropTest do
   alias PhoenixQcExample.ClientStateMachine
   import PhoenixQcExample.Generators
 
-  test "there are options", %{session: session} do
+  test "there are options" do
+    {:ok, session} = Wallaby.start_session
+
     options =
       session
       |> visit("/")
@@ -14,16 +16,24 @@ defmodule PhoenixQcExample.PropTest do
     assert options
   end
 
-  test "users get the correct votes", %{session: session} do
-    {:ok, _} = ClientStateMachine.start_link(session)
-
-    ptest [commands: gen_commands()], repeat_for: 10 do
-      PhoenixQcExample.VoteCounter.reset()
+  test "users get the correct votes" do
+    client = gen_csm()
+    ptest [commands: gen_commands([client])], repeat_for: 10, trace: true do
       commands
-      |> Enum.each(fn {command, args} ->
-        {:ok, expected, actual} = apply(ClientStateMachine, command, [args])
-        assert expected == actual
-      end)
+      |> Enum.each(& run_command(&1) )
     end
+  end
+
+  test "a user should never loose other users votes" do
+    clients = [gen_csm(), gen_csm(), gen_csm(), gen_csm()]
+    ptest [commands: gen_commands(clients)], repeat_for: 10, trace: true do
+      commands
+      |> Enum.each(& run_command(&1) )
+    end
+  end
+
+  def run_command({command, pid, args}) do
+    {:ok, expected, actual} = apply(ClientStateMachine, command, [pid, args])
+    assert expected == actual
   end
 end

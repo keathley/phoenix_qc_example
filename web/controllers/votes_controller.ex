@@ -4,6 +4,7 @@ defmodule PhoenixQcExample.VotesController do
 
   def new(conn, %{"id" => id}) do
     {:ok, current_count} = VoteCounter.get(id)
+    # Process.sleep 100
     new_count = current_count + 1
     VoteCounter.put(id, new_count)
 

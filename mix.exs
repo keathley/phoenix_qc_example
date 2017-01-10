@@ -37,7 +37,10 @@ defmodule PhoenixQcExample.Mixfile do
     #  {:quixir, "~> 0.9", only: [:dev, :test]},
      {:quixir, path: "~/Development/quixir", only: [:dev, :test]},
      {:wallaby, "~> 0.14.0", only: [:dev, :test]},
-     {:pollution, "~> 0.9.0", only: [:dev, :test]},
+     { :pollution, path: "~/Development/pollution" },
+    #  {:pollution, "~> 0.9.0", only: [:dev, :test]},
+    {:excheck, "~> 0.5", only: [:dev, :test]},
+      {:triq, github: "triqng/triq", only: [:dev, :test]},
    ]
   end
 end
