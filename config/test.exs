@@ -8,5 +8,7 @@ config :phoenix_qc_example, PhoenixQcExample.Endpoint,
 
 config :phoenix_qc_example, :sql_sandbox, true
 
+config :wallaby, timeout: 5000
+
 # Print only warnings and errors during test
 config :logger, level: :warn

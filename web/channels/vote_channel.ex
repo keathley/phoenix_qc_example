@@ -3,9 +3,9 @@ defmodule PhoenixQcExample.VoteChannel do
   alias PhoenixQcExample.VoteCounter
 
   def join("room:voting", _message, socket) do
-    {:ok, initial_counts} = VoteCounter.all()
+    {:ok, initial_votes} = VoteCounter.all()
 
-    {:ok, %{counts: initial_counts}, socket}
+    {:ok, %{votes: initial_votes}, socket}
   end
   def join("room:" <> _, _params, _socket) do
     {:error, %{reason: "unauthorized"}}

@@ -1,57 +1,35 @@
 defmodule PhoenixQcExample.ClientStateMachine do
-  use GenServer
-  use Wallaby.DSL
 
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+  def vote(name, id) do
+    %{"votes" => new_votes} = post(id, name)
+    {:ok, new_votes}
   end
 
-  def init(session) do
-    session
-    |> visit("/")
-
-    {:ok, %{session: session}}
+  def vote_next(state, [id, name], _result) do
+    {:ok, update_in(state, [name, to_string(id)], &(&1 + 1))}
   end
 
-  def reset(_) do
-    GenServer.call(__MODULE__, :reset)
+  def vote_post(state, [id, name], actual_result) do
+    expected_result = get_in(state, [name, to_string(id)]) + 1
+
+    {:ok, actual_result == expected_result}
   end
 
-  def vote(id) do
-    GenServer.call(__MODULE__, {:vote, id})
+  def body(name) do
+    "{\"name\": \"#{name}\"}"
   end
 
-  def handle_call(:reset, _from, %{session: session}) do
-    session
-    |> click_button("reset")
-
-    votes =
-      session
-      |> find(".vote-count", count: 3, text: "0")
-      |> Enum.map(&text/1)
-
-    {:reply, {:ok, votes, ["0", "0", "0"]}, %{session: session}}
+  defp post(id, name) do
+    {:ok, json} = HTTPoison.post url(id), body(name), content_type()
+    {:ok, parsed} = Poison.decode(json.body)
+    parsed
   end
 
-  def handle_call({:vote, id}, _from, %{session: session}) do
-    {old_count, _} =
-      session
-      |> find(".vote-count[data-voter-id='#{id}']")
-      |> text()
-      |> Integer.parse()
+  defp url(id) do
+    "http://localhost:4001/api/restaurants/#{id}/votes"
+  end
 
-    session
-    |> find(".vote-button[data-id='#{id}']")
-    |> click()
-
-    expected_count = old_count
-
-    {new_count, _} =
-      session
-      |> find(".vote-count[data-voter-id='#{id}']")
-      |> text()
-      |> Integer.parse()
-
-    {:reply, {:ok, expected_count, new_count}, %{session: session}}
+  defp content_type() do
+    [{"Content-Type", "application/json"}]
   end
 end

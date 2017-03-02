@@ -1,7 +1,7 @@
 defmodule PhoenixQcExample.VoteCounter do
   use GenServer
 
-  @default_state %{"1" => 0, "2" => 0, "3" => 0}
+  @default_state %{"1" => [], "2" => [], "3" => []}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
@@ -15,8 +15,12 @@ defmodule PhoenixQcExample.VoteCounter do
     GenServer.call(__MODULE__, {:get, id})
   end
 
-  def put(id, value) when is_binary(id) and is_number(value) do
+  def put(id, value) when is_binary(id) and is_list(value) do
     GenServer.call(__MODULE__, {:put, id, value})
+  end
+
+  def incr(id, name) do
+    GenServer.call(__MODULE__, {:incr, id, name})
   end
 
   def all() do
@@ -36,6 +40,10 @@ defmodule PhoenixQcExample.VoteCounter do
     {:reply, {:ok, count}, state}
   end
 
+  def handle_call(:reset, _from, _state) do
+    {:reply, {:ok, @default_state}, @default_state}
+  end
+
   def handle_call({:put, id, value}, _from, state) do
     new_state =
       state
@@ -44,7 +52,17 @@ defmodule PhoenixQcExample.VoteCounter do
     {:reply, {:ok, new_state[id]}, new_state}
   end
 
-  def handle_call(:reset, _from, _state) do
-    {:reply, {:ok, @default_state}, @default_state}
+  def handle_call({:incr, id, name}, _from, state) do
+    current_votes =
+      state
+      |> Map.get(id)
+
+    new_votes = [name | current_votes]
+
+    new_state =
+      state
+      |> Map.put(id, new_votes)
+
+    {:reply, {:ok, new_votes}, new_state}
   end
 end

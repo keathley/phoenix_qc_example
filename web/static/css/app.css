@@ -2,13 +2,38 @@
 main {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
+
+.vote-list {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.vote-button {
+  margin: 0 auto;
+  display: block;
+}
+
+.vote {
+  padding-top: 0.4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.vote:first-child { border-top: 1px solid #ccc; }
+.vote:nth-child(even) { background-color: #ececec; }
 
 .choice {
   flex: 0 0 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   padding-bottom: 2rem;
   margin-right: 2rem;
   margin-left: 2rem;
@@ -25,7 +50,6 @@ main {
 }
 
 .choice > .title {
-  flex: 0 0 100%;
 }
 
 .vote-count {

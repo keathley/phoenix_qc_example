@@ -17,7 +17,7 @@ defmodule PhoenixQcExample.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {PhoenixQcExample, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :faker, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
@@ -34,10 +34,12 @@ defmodule PhoenixQcExample.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-    #  {:quixir, "~> 0.9", only: [:dev, :test]},
-     {:quixir, path: "~/Development/quixir", only: [:dev, :test]},
+     {:quixir, "~> 0.9.1", only: [:dev, :test]},
      {:wallaby, "~> 0.14.0", only: [:dev, :test]},
      {:pollution, "~> 0.9.0", only: [:dev, :test]},
+     {:httpoison, "~> 0.10.0"},
+     {:faker, "~> 0.7", only: [:dev, :test]},
+     {:poison, "~> 2.0"},
    ]
   end
 end
