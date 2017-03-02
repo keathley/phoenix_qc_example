@@ -9,9 +9,9 @@ let voteButtons = document.querySelectorAll('.vote-button')
 let resetButton = document.querySelector('.reset-button')
 const userName = () => document.querySelector('.user-name').value
 
-resetButton.addEventListener('click', e => {
-  reset()
-})
+// resetButton.addEventListener('click', e => {
+//   reset()
+// })
 
 for (var i = 0; i < voteButtons.length; i++) {
   var button = voteButtons[i]

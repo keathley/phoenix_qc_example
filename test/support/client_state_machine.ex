@@ -1,70 +1,35 @@
 defmodule PhoenixQcExample.ClientStateMachine do
-  use GenServer
-  use Wallaby.DSL
 
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts)
+  def vote(name, id) do
+    %{"votes" => new_votes} = post(id, name)
+    {:ok, new_votes}
   end
 
-  def init(session) do
-    id = System.unique_integer()
-    name = Faker.Name.name
-
-    session
-    |> visit("/")
-    |> fill_in("name", with: name)
-
-    {:ok, %{session: session, id: id, name: name}}
+  def vote_next(state, [id, name], _result) do
+    {:ok, update_in(state, [name, to_string(id)], &(&1 + 1))}
   end
 
-  def reset(pid, _) do
-    GenServer.call(pid, :reset)
+  def vote_post(state, [id, name], actual_result) do
+    expected_result = get_in(state, [name, to_string(id)]) + 1
+
+    {:ok, actual_result == expected_result}
   end
 
-  def vote(pid, id) do
-    GenServer.call(pid, {:vote, id})
+  defp post(id, name) do
+    {:ok, json} = HTTPoison.post url(id), body(name), content_type()
+    {:ok, parsed} = Poison.decode(json.body)
+    parsed
   end
 
-  def handle_call(:reset, _from, %{session: session}=state) do
-    session
-    |> click_button("reset")
-
-    votes =
-      session
-      |> find(".vote-count", count: 3, text: "0")
-      |> Enum.map(&text/1)
-
-    {:reply, {:ok, votes, ["0", "0", "0"]}, %{state | session: session}}
+  def body(name) do
+    "{\"name\": \"#{name}\"}"
   end
 
-  def handle_call({:vote, id}, _from, %{session: session}=state) do
-    # IO.puts "Voting for #{id}"
-    {old_count, _} =
-      session
-      |> find(".vote-count[data-voter-id='#{id}']")
-      |> text()
-      |> Integer.parse()
+  defp url(id) do
+    "http://localhost:4001/api/restaurants/#{id}/votes"
+  end
 
-    session
-    |> find(".vote-button[data-id='#{id}']")
-    |> click()
-
-    # Error
-    # expected_count = old_count
-    expected_count = old_count + 1
-
-    # IO.puts "Old count: #{old_count}"
-    # IO.puts "Expected Count: #{expected_count}"
-
-    {new_count, _} =
-      session
-      # |> find(".vote-count[data-voter-id='#{id}']", text: Integer.to_string(expected_count))
-      |> find(".vote-count[data-voter-id='#{id}']")
-      |> text()
-      |> Integer.parse()
-
-    # IO.puts("New Count: #{new_count}")
-
-    {:reply, {:ok, expected_count, new_count}, %{state | session: session}}
+  defp content_type() do
+    [{"Content-Type", "application/json"}]
   end
 end

@@ -1,26 +1,25 @@
 defmodule PhoenixQcExample.Generators do
-  import Pollution.VG
+  import Pollution.{VG}
 
-  alias PhoenixQcExample.ClientStateMachine, as: CSM
-
-  def gen_csm() do
-    {:ok, session} = Wallaby.start_session()
-    {:ok, pid} = CSM.start_link(session)
-
-    value(pid)
+  def gen_commands() do
+    list(of: choose(from: [gen_vote()]), max: 20)
   end
 
-  def gen_commands(clients) do
-    # list(of: choose(from: [gen_reset(clients), gen_vote(clients)]), max: 20)
-    list(of: choose(from: [gen_vote(clients)]), max: 20)
+  def gen_commands(name) do
+    list(of: choose(from: [gen_vote(name)]), max: 20)
   end
 
-  def gen_reset(clients) do
-    tuple(like: {value(:reset), choose(from: clients), value([])})
+  def gen_vote() do
+    tuple(like: {
+      value(:vote),
+      choose(from: [value("chris"), value("jane")]),
+      choose(from: [value(1), value(2), value(3)])} )
   end
 
-  def gen_vote(clients) do
-    # tuple(like: {value(:vote), choose(from: clients), choose(from: [value(1), value(2), value(3)])} )
-    tuple(like: {value(:vote), choose(from: clients), choose(from: [value(1)])} )
+  def gen_vote(name) do
+    tuple(like: {
+      value(:vote),
+      choose(from: [value(name)]),
+      choose(from: [value(1), value(2), value(3)])} )
   end
 end

@@ -19,6 +19,10 @@ defmodule PhoenixQcExample.VoteCounter do
     GenServer.call(__MODULE__, {:put, id, value})
   end
 
+  def incr(id, name) do
+    GenServer.call(__MODULE__, {:incr, id, name})
+  end
+
   def all() do
     GenServer.call(__MODULE__, :all)
   end
@@ -46,5 +50,19 @@ defmodule PhoenixQcExample.VoteCounter do
       |> Map.put(id, value)
 
     {:reply, {:ok, new_state[id]}, new_state}
+  end
+
+  def handle_call({:incr, id, name}, _from, state) do
+    current_votes =
+      state
+      |> Map.get(id)
+
+    new_votes = [name | current_votes]
+
+    new_state =
+      state
+      |> Map.put(id, new_votes)
+
+    {:reply, {:ok, new_votes}, new_state}
   end
 end
