@@ -15,14 +15,14 @@ defmodule PhoenixQcExample.ClientStateMachine do
     {:ok, actual_result == expected_result}
   end
 
+  def body(name) do
+    "{\"name\": \"#{name}\"}"
+  end
+
   defp post(id, name) do
     {:ok, json} = HTTPoison.post url(id), body(name), content_type()
     {:ok, parsed} = Poison.decode(json.body)
     parsed
-  end
-
-  def body(name) do
-    "{\"name\": \"#{name}\"}"
   end
 
   defp url(id) do
