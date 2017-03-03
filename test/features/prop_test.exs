@@ -8,7 +8,7 @@ defmodule PhoenixQcExample.PropTest do
 
   @tag :focus
   test "users don't effect each others votes" do
-    ptest [commands: gen_commands()] do
+    ptest [commands: gen_commands([value("chris"), value("jane")])] do
       VoteCounter.reset()
       {_state, result} = run_parallel_commands(commands, Client)
       assert result

@@ -1,25 +1,14 @@
 defmodule PhoenixQcExample.Generators do
   import Pollution.{VG}
 
-  def gen_commands() do
-    list(of: choose(from: [gen_vote()]), max: 20)
+  def gen_commands(names) do
+    list(of: choose(from: [gen_vote(names)]), max: 20)
   end
 
-  def gen_commands(name) do
-    list(of: choose(from: [gen_vote(name)]), max: 20)
-  end
-
-  def gen_vote() do
+  def gen_vote(names) do
     tuple(like: {
       value(:vote),
-      choose(from: [value("chris"), value("jane")]),
-      choose(from: [value(1), value(2), value(3)])} )
-  end
-
-  def gen_vote(name) do
-    tuple(like: {
-      value(:vote),
-      choose(from: [value(name)]),
+      choose(from: names),
       choose(from: [value(1), value(2), value(3)])} )
   end
 end
