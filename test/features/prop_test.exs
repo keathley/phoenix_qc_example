@@ -15,14 +15,6 @@ defmodule PhoenixQcExample.PropTest do
     end
   end
 
-  def run_p_commands([l1, l2], module) do
-    t1 = Task.async(fn -> run_commands(l1, module) end)
-    t2 = Task.async(fn -> run_commands(l2, module) end)
-    {_, ra} = Task.await(t1)
-    {_, rb} = Task.await(t2)
-    {:ok, ra && rb}
-  end
-
   def run_parallel_commands(commands, module) do
     {l1, l2} = split_commands(commands)
     t1 = Task.async(fn -> run_commands(l1, module) end)
